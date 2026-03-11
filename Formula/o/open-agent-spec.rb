@@ -1,7 +1,7 @@
 class OpenAgentSpec < Formula
   include Language::Python::Virtualenv
 
-  desc "YAML-first agent specs; Typer CLI (oa) for run and init"
+  desc "CLI for creating and running Open Agent Spec projects"
   homepage "https://www.openagentstack.ai"
   url "https://files.pythonhosted.org/packages/6b/65/274caec9b19e8546fa2f356648c5424e4306aabf83402d13c40d29abe8a4/open_agent_spec-1.2.3.tar.gz"
   sha256 "9742a4fdabd497194a49e1504bcc38e8d440c944605f386da68958e9512bc284"
@@ -203,6 +203,13 @@ class OpenAgentSpec < Formula
   end
 
   test do
-    assert_match "Open Agent Spec CLI version", shell_output("#{bin}/oa version")
+    output_path = testpath/"agent"
+
+    system bin/"oa", "init", "--template", "minimal", "--output", output_path
+
+    assert_path_exists output_path/"agent.py"
+    assert_path_exists output_path/"README.md"
+    assert_path_exists output_path/"requirements.txt"
+    assert_path_exists output_path/"prompts"
   end
 end
